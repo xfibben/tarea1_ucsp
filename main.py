@@ -14,21 +14,20 @@ import monitoring as mn
 import preprocessing as pp
 import training as tr
 
-
 DATA_PATH = "bank-full.csv"
 
 
 def main():
     """Ejecuta el pipeline completo en el orden indicado."""
-    # 1. Cargar y preprocesar
+    # 1 Cargar y preprocesar
     df_raw = pp.load_data(DATA_PATH)
     df_processed = pp.preprocess(df_raw)
 
-    # 2. Monitoreo
+    # 2 Monitoreo
     mn.monitor_raw(df_raw)
     mn.monitor_processed(df_processed)
 
-    # 3. Entrenamiento
+    # 3 entrenamiento
     model, metrics = tr.train(df_processed)
     tr.evaluate(model, metrics)
 

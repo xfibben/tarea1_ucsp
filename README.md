@@ -30,7 +30,7 @@ python main.py
 ## Resultado
 
 - Dataset raw: 45211 filas y 17 columnas.
-- Dataset procesado: 45211 filas y 56 columnas.
+- Dataset procesado: 45211 filas y 47 columnas.
 - Valores nulos finales: 0.
 - Duplicados finales: 0.
 - La clase positiva tiene baja conversion: 11.70%.
@@ -38,10 +38,10 @@ python main.py
 Metricas del modelo con RandomForest:
 
 ```text
-accuracy: 0.90
-precision clase positiva: 0.6990
-recall clase positiva: 0.3270
-f1-score clase positiva: 0.4456
+accuracy: 0.91
+precision clase positiva: 0.7050
+recall clase positiva: 0.3365
+f1-score clase positiva: 0.4555
 ```
 
 El modelo tiene buena precision para la clase positiva: cuando predice que un

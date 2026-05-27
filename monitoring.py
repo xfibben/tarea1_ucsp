@@ -61,7 +61,9 @@ def audit_processed_data(
     if missing_values:
         alerts.append(f"quedaron {missing_values} nulos despues del preprocesamiento")
 
-    non_numeric_columns = feature_data.select_dtypes(exclude=["number"]).columns.tolist()
+    non_numeric_columns = (
+        feature_data.select_dtypes(exclude=["number"]).columns.tolist()
+    )
     if non_numeric_columns:
         alerts.append(f"features no numericas: {', '.join(non_numeric_columns)}")
 
@@ -123,23 +125,6 @@ def compare_numeric_distributions(
     return pd.DataFrame(rows)
 
 
-def print_audit_report(result: AuditResult) -> None:
-    """Imprime el resultado de monitoreo en formato legible."""
-    print(f"\nMONITOREO DATASET {result.name.upper()}")
-    print("-" * 42)
-    print(f"filas: {result.rows}")
-    print(f"columnas: {result.columns}")
-    print(f"nulos totales: {result.missing_values}")
-    print(f"duplicados: {result.duplicated_rows}")
-
-    if result.alerts:
-        print("alertas:")
-        for alert in result.alerts:
-            print(f"  - {alert}")
-    else:
-        print("alertas: sin hallazgos criticos")
-
-
 def print_distribution_report(distribution_report: pd.DataFrame) -> None:
     """Muestra el reporte KS si existen columnas comparables."""
     if distribution_report.empty:
@@ -174,10 +159,23 @@ def monitor_raw(df: pd.DataFrame) -> None:
     Analiza la calidad de la data cruda.
     Reporta: forma, nulos, duplicados, estadisticas basicas y balance del target.
     """
-    print_audit_report(audit_raw_data(df))
-    print("\nEstadisticas numericas raw:")
+    audit = audit_raw_data(df)
+
+    print("=" * 50)
+    print("MONITOREO — DATA CRUDA")
+    print(f"  Filas x Columnas : {df.shape}")
+    print(f"  Valores nulos    : {df.isnull().sum().sum()}")
+    print(f"  Duplicados       : {df.duplicated().sum()}")
+    print("  Estadisticas:")
     print(df.describe().to_string())
+
+    if audit.alerts:
+        print("  Alertas:")
+        for alert in audit.alerts:
+            print(f"    - {alert}")
+
     _print_ks_by_numeric_column(df)
+    print("=" * 50)
 
 
 def monitor_processed(df: pd.DataFrame) -> None:
@@ -185,7 +183,19 @@ def monitor_processed(df: pd.DataFrame) -> None:
     Verifica la calidad de la data post-preprocesamiento.
     Reporta: forma, nulos restantes, tipos de datos y distribucion de columnas.
     """
-    print_audit_report(audit_processed_data(df))
-    print("\nTipos de datos procesados:")
+    audit = audit_processed_data(df)
+
+    print("=" * 50)
+    print("MONITOREO — DATA PROCESADA")
+    print(f"  Filas x Columnas : {df.shape}")
+    print(f"  Nulos restantes  : {df.isnull().sum().sum()}")
+    print("  Tipos de datos:")
     print(df.dtypes.value_counts().to_string())
+
+    if audit.alerts:
+        print("  Alertas:")
+        for alert in audit.alerts:
+            print(f"    - {alert}")
+
     _print_ks_by_numeric_column(df)
+    print("=" * 50)
