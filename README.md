@@ -1,8 +1,16 @@
-# Pipeline ML - Bank Marketing
+# Pipeline ML - con dataset Bank Marketing
+
+```text
+Arturo Eyck Tapia Ramos
+```
+
+```text
+https://github.com/xfibben/tarea1_ucsp
+```
 
 Este proyecto implementa un pipeline simple de machine learning usando el dataset
 `bank-full.csv`. El objetivo es predecir si un cliente acepta o no un deposito a
-plazo ofrecido por una campana bancaria.
+plazo ofrecido por campaña de un banco.
 
 ## Archivos
 
@@ -19,9 +27,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## Resultado obtenido
-
-Al ejecutar el proyecto con `bank-full.csv`, se obtiene:
+## Resultado
 
 - Dataset raw: 45211 filas y 17 columnas.
 - Dataset procesado: 45211 filas y 56 columnas.
